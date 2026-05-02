@@ -30,7 +30,7 @@ async function upload(){
   formData.append("file", file);
 
   try {
-    const res = await fetch("https://arg-tune-my-808.onrender.com/analyze", {
+    const res = await fetch("https://your-app.up.railway.app", {
       method: "POST",
       body: formData
     });
