@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ARG Tune My 808</title>
+</head>
+
+<body style="background:#0d0d0d;color:white;text-align:center;font-family:Arial;padding-top:80px;">
+
+<h1>🎧 ARG TUNE MY 808</h1>
+
+<input type="file" id="file">
+<br><br>
+
+<button onclick="upload()">Analyze Sample</button>
+
+<h2 id="result" style="margin-top:30px;">Upload a sample 🎵</h2>
+
+<script>
+async function upload(){
+
+  const file = document.getElementById("file").files[0];
+  const result = document.getElementById("result");
+
+  if(!file){
+    result.innerHTML = "❌ Please upload a file";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/analyze", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    result.innerHTML =
+      "🎹 Key: " + data.key + "<br>" +
+      "🎯 Root: " + data.root + "<br>" +
+      "🎼 Scale: " + data.scale + "<br>" +
+      "🔊 808: " + data["808_notes"] + "<br>" +
+      "🎚 Slides: " + data.slides;
+
+  } catch (err) {
+    result.innerHTML = "❌ Backend not running";
+  }
+}
+</script>
+
+</body>
+</html>
